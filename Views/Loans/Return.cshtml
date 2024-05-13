@@ -1,0 +1,55 @@
+﻿@model IEnumerable<Labb4.Models.Loan>
+
+@{
+    ViewData["Title"] = "Return";
+}
+
+<h1>Return Books</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Loan Date
+            </th>
+            <th>
+                Return Date
+            </th>
+            <th>
+                Customer
+            </th>
+            <th>
+                Book
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var loan in Model)
+        {
+            if (loan.IsReturned == false)
+            {
+                <tr>
+                    <td>
+                    @Html.DisplayFor(modelItem => loan.LoanDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => loan.ReturnDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => loan.Customer.CustomerName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => loan.Book.BookTitle)
+                </td>
+                <td>
+                    <form asp-action="MarkAsReturned" method="post">
+                        <input type="hidden" name="loanId" value="@loan.LoanId" />
+                        <button type="submit" class="btn btn-primary">Return book</button>
+                    </form>
+                </td>
+            </tr>
+            }
+        }
+    </tbody>
+</table>

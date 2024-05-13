@@ -1,0 +1,84 @@
+﻿@model IEnumerable<Labb4.Models.Loan>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+
+@using (Html.BeginForm("Index", "Loans", FormMethod.Get))
+{
+    <div class="form-group">
+        <label for="selectedCustomerId">Select Customer:</label>
+        <select name="selectedCustomerId" id="selectedCustomerId" class="form-control" onchange="this.form.submit()">
+            <option value="">Choose a customer</option>
+            @foreach (var item in ViewBag.CustomerList)
+            {
+                <option value="@item.Value">@item.Text</option>
+            }
+        </select>
+        <input type="submit" value="Visa alla">
+    </div>
+}
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.LoanDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ReturnDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Customer)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Book)
+            </th>
+            <th>
+                Status
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.LoanDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ReturnDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Customer.CustomerName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Book.BookTitle)
+            </td>
+            <td>
+                @if(item.IsReturned == true)
+                {
+                    <p>Returned</p>
+                }
+                else
+                {
+                    <p>Loaned out</p>
+                }
+            </td>
+            <td>
+                <a asp-action="Return" asp-route-id="@item.LoanId">Return</a> |
+                <a asp-action="Edit" asp-route-id="@item.LoanId">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.LoanId">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.LoanId">Delete</a>
+            </td>
+        </tr>
+        }
+    </tbody>
+</table>
